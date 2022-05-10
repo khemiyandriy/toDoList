@@ -1,28 +1,113 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" class = "main_logo" src="./assets/logo.png">
+    <h1>Aplication ToDo Khemiia</h1>
+    <ToDoList 
+    v-bind:todos="todos" v-on:remove-todo="removeTodo"/>
+    <AddTodo v-on:add-todo="addTodo"/>
+    <Loader v-if="loading"/>
+<!--     <Students 
+    v-bind:students="students"/> -->
+    
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import ToDoList from "@/components/ToDoList.vue";
+import AddTodo from "@/components/AddTodo.vue";
+import Loader from"@/components/Loader.vue";
+import Students from "@/components/Students.vue";
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      // todos: [
+      //   {id: 1, text: "Lern Vue JS", checked: false},
+      //   {id: 2, text: "Lern React", checked: false},
+      //   {id: 3, text: "Lern Angular", checked: false},
+      //   {id: 4, text: "Lern PHP", checked: false},
+
+      // ],
+      todos: [
+        // {id: 1, title: "Lern Vue JS", completed: false},
+        // {id: 2, title: "Lern React", completed: false},
+        // {id: 3, title: "Lern Angular", completed: false},
+        // {id: 4, title: "Lern PHP", completed: false},
+
+      ],
+      students: [
+        {id: 1, firstname: "Andrii", lastname: "Khemii"},
+        {id: 2, firstname: "Andrii", lastname: "Yatskevych"},
+        {id: 3, firstname: "Stanislav", lastname: "Avramenko"},
+      ],
+      loading: true
+    }
+  },
+  mounted() {
+  fetch('./todos.json')
+  .then(response => response.json())
+  .then(json => {
+    setTimeout(()=>{
+    this.todos = json;
+    this.loading = false 
+    }, 2000)
+    
+    })
+  },
+  methods: {
+    removeTodo(id) {
+      this.todos = this.todos.filter(todo => todo.id !== id)
+    },
+    addTodo(todo) {
+      /* let i;
+      for (i = 0; i < this.todos.length; i++) 
+      !this.todos[i] ? i : i=i+1;
+      todo.id=i; */
+      /* var rez=0;
+      for (let i = 1; i <= this.todos.length; i++){
+        if (!this.todos[this.todos.length]){
+          return rez=i+1;
+        }
+      }
+      console.log(rez); */
+      /* let i=this.todos.length+1;
+      while (!!this.todos[i]){console.log(!!this.todos[i]);i++};
+      todo.id = i; */
+      /* for (let i=0; i< this.todos.length; i++) {
+        console.log(!this.todos[i])
+      }
+      todo.id = this.todos.length + 1; */
+
+      this.todos.push(todo);
+    }
+  },
+  components: {ToDoList,
+    Students, AddTodo, Loader}
+    
   }
-}
+
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body{
+  background: linear-gradient(rgba(61, 103, 187, 0.9), rgba(255, 255, 255, .9));
 }
+#app{
+  text-align: center;/* 
+  background: #87a4df; */
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+}
+.main_logo{
+  color: aqua;
+  width: 100px;
+}
+h1{
+  color:aliceblue;
+}
+
+
 </style>
