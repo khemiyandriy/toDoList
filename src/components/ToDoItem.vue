@@ -2,8 +2,8 @@
          <li>
     <span v-bind:class="{crossed: todo.completed}">
         <input type="checkbox" v-on:change="todo.completed = !todo.completed">
-        <b>{{index + 1}}</b>
-        {{todo.title}}
+        <b class="index">{{index + 1}}</b>
+        <span v-on:dblclick="editTodo" v-show="!inEditModel">{{todo.title}}</span><input ref="todoInput" v-on:keyup.enter='savedToDo' v-model="todo.title" v-show="inEditModel">
     </span>
     <button class="close" v-on:click="$emit('remove-todo', todo.id)">X</button>
         </li>
@@ -11,12 +11,27 @@
 
 <script>
 export default {
+    data: function() {return {inEditModel:false}},
+    methods: {
+        editTodo: function() {
+            this.inEditModel = true;
+        },
+        savedToDo: function() {
+            this.inEditModel = false;
+        }
+    },
+    mounted() {
+        let vm=this;
+        document.addEventListener("click", (item)=> {
+            if (item.target !==vm.$refs["todoInput"]) {vm.savedToDo()}
+        })
+    },
      props : {todo :{
          type: Object,
          required: true
      }, 
      index: Number
-}
+}, 
 }
 </script>
 
@@ -28,7 +43,7 @@ export default {
         background: linear-gradient(rgba(75, 128, 233, 0.5), rgba(255, 255, 255, .5));
     }
     li{
-        width: 30%;
+        width: 90%;
         margin: 20px auto;
         display: flex;
         justify-content: space-between;
@@ -45,5 +60,8 @@ export default {
 
     .crossed{
         text-decoration: line-through;
+    }
+    .index{
+        margin: 0 10px;
     }
 </style>

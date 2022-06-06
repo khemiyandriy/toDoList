@@ -1,21 +1,32 @@
 <template>
-        <form v-on:submit.prevent="onSubmit">
-            <input type="text" v-model="title">
-            <button type="submit">Add ToDo</button>
+<div>
 
-        </form>
+        <popup v-if="isPopupVisible" @closepopup="closeTodoPopup" >
+
+        </popup>
+
+     <button @click="showPopup" >Add ToDo</button>
+<!--         <form v-on:submit.prevent="onSubmit">
+            <input type="text" v-model="title" v-show="showInput">
+            <button type="submit" v-show="showInput">ok</button>
+        </form>  -->
+</div>
+        
 </template>
 
 <script>
+import popup from "@/components/popup.vue"
 export default {
-    data() {
+    data: function() {
         return {
-            title: ""
-        }
-    },
+        isPopupVisible:false,
+        title: ""}},
     methods: {
-        onSubmit() {
-            console.log(this.title);
+        showPopup(){
+            this.isPopupVisible = true;
+        },
+        closeTodoPopup(title){
+            this.title=title;
             if(this.title.trim()){
                 let newTodo = {
                     title: this.title,
@@ -24,10 +35,12 @@ export default {
                 }
                 this.$emit("add-todo", newTodo);
                 this.title = "";
-                console.log(newTodo);
-            }
-        }
-    }
+        };
+          this.isPopupVisible = false;},
+
+    },
+   
+    components: {popup}
 }
 </script>
 
@@ -53,6 +66,7 @@ button {
   text-transform: uppercase;
   border-radius: 5px;
   cursor: pointer;
+  height: 40px;
 }
 
 </style>

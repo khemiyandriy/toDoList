@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="newList">
     <img alt="Vue logo" class = "main_logo" src="./assets/logo.png">
     <button class="delete">X</button>
     <h1>Aplication ToDo Khemiia</h1>
@@ -20,7 +20,7 @@ import ToDoList from "@/components/ToDoList.vue";
 import AddTodo from "@/components/AddTodo.vue";
 import Loader from"@/components/Loader.vue";
 export default {
-  name: 'App',
+  name: 'NewList',
   data() {
     return {
       // todos: [
