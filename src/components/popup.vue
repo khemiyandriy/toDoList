@@ -6,7 +6,7 @@
         <div class="popup__form"  ref="popup">
 
             <form v-on:submit.prevent="onSubmit">
-            <input type="text" v-model="title" >
+            <input type="text" v-model="title" id="input">
             <button type="submit" @click="saveToDo">OK</button>
 
         </form>
@@ -23,6 +23,7 @@ export default {
         }
   }, 
 mounted() {
+        document.querySelector("#input").focus();
         let vm=this;
         document.addEventListener("click", (item)=> {
             if (item.target !==vm.$refs["popup"]) {vm.saveToDo()}
