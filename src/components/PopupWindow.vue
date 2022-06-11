@@ -1,7 +1,7 @@
 <template>
     <div class="popup">
         <div class="popup__header">
-           <p>New ToDo</p> 
+           <h1>New ToDo</h1> 
         </div>
         <div class="popup__form"  ref="popup">
 
@@ -35,6 +35,8 @@ mounted() {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .popup{
+    box-sizing: border-box;
+    padding: 20px;
     height: 200px;
     width: 400px;
     position: fixed;
@@ -44,6 +46,9 @@ mounted() {
     z-index: 10;
     border: 2px solid black;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 button {
   background: #295956;

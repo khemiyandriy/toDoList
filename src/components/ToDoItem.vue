@@ -1,67 +1,73 @@
 <template>
-         <li>
-    <span v-bind:class="{crossed: todo.completed}">
-        <input type="checkbox" v-on:change="todo.completed = !todo.completed">
-        <b class="index">{{index + 1}}</b>
-        <span v-on:dblclick="editTodo" v-show="!inEditModel">{{todo.title}}</span><input ref="todoInput" v-on:keyup.enter='savedToDo' v-model="todo.title" v-show="inEditModel">
-    </span>
-    <button class="close" v-on:click="$emit('remove-todo', todo.id)">X</button>
-        </li>
+  <div class="todo__item">
+
+    <input type="checkbox" 
+      :checked="todo.checked" 
+      @change="$emit('change', todo.id)"/>
+
+    <p class="text" 
+      @click="editToDo" 
+      v-show="!inEditMode" 
+      v-bind:class="{crossed: todo.checked}">
+      {{ todo.todoTitle }} 
+    </p> 
+
+    <input type="text" 
+      v-model="text" 
+      :placeholder="todo.todoTitle" 
+      v-show="inEditMode" 
+      @keyup.enter='savedToDo' 
+      ref="todoInput">
+    <button class="close" v-on:click="$emit('deleteTodoItem', todo.id)">X</button>
+  </div>
 </template>
 
 <script>
 export default {
-    data: function() {return {inEditModel:false}},
-    methods: {
-        editTodo: function() {
-            this.inEditModel = true;
-        },
-        savedToDo: function() {
-            this.inEditModel = false;
-        }
-    },
-    mounted() {
+  data: ()=> {
+   return  {
+    inEditMode: false,
+    text: ""
+    } 
+  },
+  props: {
+    todo: {},
+  },
+  methods: {
+      editToDo() {
+        this.inEditMode = true;
+/*         document.addEventListener("click", (item)=> {
+        if (item.target !==this.$refs["todoInput"]) { this.inEditMode = false} }) */
+      },
+      savedToDo(){
+        this.$emit('savedToDo', this.text,  this.todo.id);
+        this.inEditMode = false;
+      }
+  },
+/* mounted() {
         let vm=this;
         document.addEventListener("click", (item)=> {
-            if (item.target !==vm.$refs["todoInput"]) {vm.savedToDo()}
+            if (item.target !==vm.$refs["todoInput"]) {vm.inEditMode = false}
         })
-    },
-     props : {todo :{
-         type: Object,
-         required: true
-     }, 
-     index: Number
-}, 
-}
+        
+    } */
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    button{
-        border: none;
-        border-radius: 50%;
-        background: linear-gradient(rgba(75, 128, 233, 0.5), rgba(255, 255, 255, .5));
-    }
-    li{
-        width: 90%;
-        margin: 20px auto;
-        display: flex;
-        justify-content: space-between;
-        background: linear-gradient(rgba(0, 0, 0, .5), rgba(255, 255, 255, .5));
-        padding: 10px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 18px;
-    }
-
-    li:hover{
-        background: rgb(93, 122, 162);
-    }
-
-    .crossed{
+.crossed{
         text-decoration: line-through;
     }
-    .index{
-        margin: 0 10px;
-    }
+.todo__item{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.text{
+  margin: 20px 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif ;
+  font-size: 24px;
+  font-style: italic;
+}
+
 </style>
